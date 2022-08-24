@@ -9,4 +9,4 @@ const CommentList = ({ comments }) => {
   return <ul>{renderedComments}</ul>;
 };
 
-export default CommentList;
+export default CommentList;  

@@ -41,7 +41,6 @@ app.post('/events', (req, res) => {
         default:
             break;
     }
-    console.log(posts)
     res.send({})
 })
 
