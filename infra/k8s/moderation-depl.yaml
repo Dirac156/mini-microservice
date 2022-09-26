@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1 # number of similar pods we want to run
+  selector: # tells the deployement which pods to use.
+    matchLabels:
+      app: moderation
+  template:
+    metadata:
+      labels:
+        app: moderation
+    spec:
+      containers:
+      - name: moderation
+        image: diracmmd/moderation
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  type: NodePort
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003 # The port that nodePort uses to map the traffic to the container
+      targetPort: 4003 #The port where our container is runing
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003 # The port that nodePort uses to map the traffic to the container
+      targetPort: 4003 #The port where our container is runing

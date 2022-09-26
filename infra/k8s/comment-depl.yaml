@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1 # number of similar pods we want to run
+  selector: # tells the deployement which pods to use.
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      containers:
+      - name: comments
+        image: diracmmd/comments
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  type: NodePort
+  selector:
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001 # The port that nodePort uses to map the traffic to the container
+      targetPort: 4001 #The port where our container is runing
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001 # The port that nodePort uses to map the traffic to the container
+      targetPort: 4001 #The port where our container is runing
